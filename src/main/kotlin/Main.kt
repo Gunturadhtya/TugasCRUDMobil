@@ -5,15 +5,22 @@ import java.time.LocalDate
 
 fun main() {
     val expenseMenu = ExpenseMenu()
+
+    print("Enter Budget : ")
+    val budget = readln().toBigDecimalOrNull() ?: BigDecimal.ZERO
+    print("Enter For How Long (Day) : ")
+    val day = readln().toLongOrNull() ?: 0
+    val analytic = AnalyticsExpense(budget, day)
+
     while (true) {
-        listExpenses(expenseMenu)
+        listExpenses(expenseMenu, analytic)
         expenseMenu.showMenu()
         print("Select Menu: ")
         val selected = readln().toIntOrNull() ?: -1
 
         when (selected) {
             1 -> addExpense(expenseMenu)
-            2 -> listExpenses(expenseMenu)
+            2 -> listExpenses(expenseMenu, analytic)
             3 -> editExpense(expenseMenu)
             4 -> deleteExpense(expenseMenu)
             5 -> showData(expenseMenu)
@@ -35,13 +42,22 @@ fun addExpense(menu: ExpenseMenu) {
     println("Successfully added.")
 }
 
-fun listExpenses(menu: ExpenseMenu) {
+fun listExpenses(menu: ExpenseMenu, analytic: AnalyticsExpense) {
     val items = menu.list()
     if (items.isEmpty()) {
         println("No records found.")
     } else {
-        println("\nID | Date | Tag | Amount")
-        items.forEach { println("${it.id} | ${it.date} | ${it.tag} | ${it.amount}") }
+        println("\nID | Date | Tag | Amount | Description")
+        items.forEach {
+            println("${it.id} | ${it.date} | ${it.tag} | ${it.amount} |")
+            analytic.currentMoney -= it.amount
+        }
+
+        println("\n Analytics Expense ")
+        println("Date | Starting Budget | Days Left | Current Money | Daily Budget")
+        println("${analytic.dateStarted} | ${analytic.startingBudget} | ${analytic.daysLeft} | ${analytic.currentMoney} | ${analytic.dailyBudget}")
+
+        analytic.currentMoney = analytic.startingBudget
     }
 }
 

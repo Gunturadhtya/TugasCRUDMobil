@@ -7,5 +7,5 @@ data class Expense(
     val id: Int,
     val date: LocalDate,
     val tag: String,
-    val amount: BigDecimal,
+    val amount: BigDecimal
 )
