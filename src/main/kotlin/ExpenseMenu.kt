@@ -1,34 +1,34 @@
 package org.mobil
 
-class ExpenseMenu: MenuInterface<Expense, Int> {
+class ExpenseMenu {
     private val expenses = mutableListOf<Pair<Int, Expense>>()
     private var nextId = 1
 
-    override fun add(data: Expense) {
+    fun add(data: Expense) {
         val newData = data.copy(id = nextId++)
         expenses.add(Pair(newData.id, newData))
     }
 
-    override fun list(): List<Expense> {
+    fun list(): List<Expense> {
         return expenses.map {it.second}
     }
 
-    override fun edit(key: Int, newData: Expense) {
+    fun edit(key: Int, newData: Expense) {
         val idx = expenses.indexOfFirst { it.first == key }
         if (idx != -1){
             expenses[idx] = Pair(key, newData)
         }
     }
 
-    override fun delete(key: Int) {
+    fun delete(key: Int) {
         expenses.removeIf { it.first == key }
     }
 
-    override fun showData(key: Int): Pair<Int, Expense>? {
+    fun showData(key: Int): Pair<Int, Expense>? {
         return expenses.find { it.first == key }
     }
 
-    override fun showMenu() {
+    fun showMenu() {
         println("==================================")
         println("Expense Menu")
         println("1. Add Expense")
