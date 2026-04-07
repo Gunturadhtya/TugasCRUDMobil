@@ -34,9 +34,9 @@ fun addExpense(menu: ExpenseMenu) {
     print("Enter Amount: ")
     val amount = readln().toBigDecimalOrNull() ?: BigDecimal.ZERO
     print("Enter Tag (Leave blank if there are no tag) : ")
-    var tag = readln()
-    if(tag.isEmpty()) {
-        tag = "No Tag"
+    var tag: String? = readln()
+    if(tag?.isEmpty() ?: false) {
+        tag = null
     }
     menu.add(Expense(0, LocalDate.now(), tag, amount))
     println("Successfully added.")
@@ -49,11 +49,11 @@ fun listExpenses(menu: ExpenseMenu, analytic: AnalyticsExpense) {
     } else {
         println("\nID | Date | Tag | Amount | Description")
         items.forEach {
-            println("${it.id} | ${it.date} | ${it.tag} | ${it.amount} |")
+            println("${it.id} | ${it.date} | ${it.tag ?: "No Tag"} | ${it.amount} |")
             analytic.currentMoney -= it.amount
         }
 
-        println("\n Analytics Expense ")
+        println("\nAnalytics Expense ")
         println("Date | Starting Budget | Days Left | Current Money | Daily Budget")
         println("${analytic.dateStarted} | ${analytic.startingBudget} | ${analytic.daysLeft} | ${analytic.currentMoney} | ${analytic.dailyBudget}")
 
