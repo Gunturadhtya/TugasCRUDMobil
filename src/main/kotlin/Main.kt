@@ -2,11 +2,9 @@ package org.mobil
 
 import java.math.BigDecimal
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 fun main() {
     val expenseMenu = ExpenseMenu()
-
     while (true) {
         listExpenses(expenseMenu)
         expenseMenu.showMenu()
@@ -28,8 +26,11 @@ fun main() {
 fun addExpense(menu: ExpenseMenu) {
     print("Enter Amount: ")
     val amount = readln().toBigDecimalOrNull() ?: BigDecimal.ZERO
-    print("Enter Tag: ")
-    val tag = readln()
+    print("Enter Tag (Leave blank if there are no tag) : ")
+    var tag = readln()
+    if(tag.isEmpty()) {
+        tag = "No Tag"
+    }
     menu.add(Expense(0, LocalDate.now(), tag, amount))
     println("Successfully added.")
 }
@@ -55,7 +56,10 @@ fun editExpense(menu: ExpenseMenu) {
         val amount = if (inputAmount.isBlank()) existing.second.amount else inputAmount.toBigDecimalOrNull() ?: existing.second.amount
 
         print("Enter New Tag: ")
-        val tag = readln()
+        var tag = readln()
+        if(tag.isEmpty()) {
+            tag = "No Tag"
+        }
 
         menu.edit(id, Expense(id, LocalDate.now(), tag, amount))
         println("Successfully updated.")

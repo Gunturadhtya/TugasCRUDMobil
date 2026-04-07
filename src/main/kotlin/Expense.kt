@@ -6,6 +6,6 @@ import java.time.LocalDate
 data class Expense(
     val id: Int,
     val date: LocalDate,
-    val tag: String?,
+    val tag: String,
     val amount: BigDecimal,
 )
